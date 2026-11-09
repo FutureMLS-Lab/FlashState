@@ -70,7 +70,7 @@ Each configuration pins its model's revision (`MODEL_REVISION`):
 
 ## The README's figures
 
-The README shows the paper's measurements, as on [flashstate.ai](https://flashstate.ai). Their rows are in
+The README shows the paper's measurements, as on [flashstates.ai](https://flashstates.ai). Their rows are in
 `docs/figures/`, in the format of `analysis/collect.py --json`.
 
 - **GPU only** ([`gpu-only.json`](../docs/figures/gpu-only.json)): the values as read from the paper's figure. 393
