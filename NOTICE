@@ -1,0 +1,15 @@
+FlashStates
+Licensed under the Apache License, Version 2.0 (LICENSE).
+
+This repository and the images built from it include or build on the following third-party software:
+
+- vLLM (https://github.com/vllm-project/vllm), Apache License 2.0. FlashStates' changes are a fork pinned as
+  third_party/vllm.
+- Mooncake (https://github.com/kvcache-ai/Mooncake), Apache License 2.0. FlashStates' changes are a fork pinned as
+  third_party/mooncake.
+- AIPerf as shipped in the AgentX harness (https://github.com/SemiAnalysisAI/agentx-harness), Apache License 2.0,
+  copied with modifications into benchmarks/agentx_harness (see its PROVENANCE.md).
+- FlashKDA (https://github.com/vllm-project/FlashKDA), MIT License, compiled into the B200 image's KDA export kernel
+  together with the vLLM fork's csrc/flashkda_export (MIT License).
+- CUTLASS (https://github.com/NVIDIA/cutlass), BSD 3-Clause License, headers used to build that kernel.
+- FlashInfer (https://github.com/flashinfer-ai/flashinfer), Apache License 2.0, a kernel vendored in the vLLM fork.

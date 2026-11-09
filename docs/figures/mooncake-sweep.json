@@ -1,0 +1,233 @@
+[
+ {
+  "config": "glm53flash-nvfp4-mooncake-mtp3",
+  "engine": "flashstate",
+  "sessions": 32,
+  "prompt_tpm_per_gpu": 6122000,
+  "decode_p50_tok_s": 177.3,
+  "ttft_p50_s": 0.18,
+  "ttft_p90_s": 0.64,
+  "hit_rate": 0.979,
+  "output_tpm_per_gpu": 39762
+ },
+ {
+  "config": "glm53flash-nvfp4-mooncake-mtp3",
+  "engine": "flashstate",
+  "sessions": 40,
+  "prompt_tpm_per_gpu": 7495000,
+  "decode_p50_tok_s": 153.9,
+  "ttft_p50_s": 0.19,
+  "ttft_p90_s": 0.65,
+  "hit_rate": 0.981,
+  "output_tpm_per_gpu": 51568
+ },
+ {
+  "config": "glm53flash-nvfp4-mooncake-mtp3",
+  "engine": "flashstate",
+  "sessions": 48,
+  "prompt_tpm_per_gpu": 8801000,
+  "decode_p50_tok_s": 132.4,
+  "ttft_p50_s": 0.23,
+  "ttft_p90_s": 0.92,
+  "hit_rate": 0.978,
+  "output_tpm_per_gpu": 57246
+ },
+ {
+  "config": "glm53flash-nvfp4-mooncake-mtp3",
+  "engine": "flashstate",
+  "sessions": 56,
+  "prompt_tpm_per_gpu": 9583000,
+  "decode_p50_tok_s": 110.5,
+  "ttft_p50_s": 0.28,
+  "ttft_p90_s": 1.11,
+  "hit_rate": 0.976,
+  "output_tpm_per_gpu": 68495
+ },
+ {
+  "config": "glm53flash-nvfp4-mooncake-mtp3",
+  "engine": "flashstate",
+  "sessions": 64,
+  "prompt_tpm_per_gpu": 10177000,
+  "decode_p50_tok_s": 96.0,
+  "ttft_p50_s": 0.4,
+  "ttft_p90_s": 1.68,
+  "hit_rate": 0.973,
+  "output_tpm_per_gpu": 76476
+ },
+ {
+  "config": "glm53flash-nvfp4-mooncake-mtp3",
+  "engine": "flashstate",
+  "sessions": 72,
+  "prompt_tpm_per_gpu": 10969000,
+  "decode_p50_tok_s": 78.9,
+  "ttft_p50_s": 0.86,
+  "ttft_p90_s": 3.86,
+  "hit_rate": 0.968,
+  "output_tpm_per_gpu": 83314
+ },
+ {
+  "config": "glm53flash-nvfp4-mooncake-mtp3",
+  "engine": "flashstate",
+  "sessions": 80,
+  "prompt_tpm_per_gpu": 11213000,
+  "decode_p50_tok_s": 70.7,
+  "ttft_p50_s": 2.34,
+  "ttft_p90_s": 7.18,
+  "hit_rate": 0.964,
+  "output_tpm_per_gpu": 86422
+ },
+ {
+  "config": "glm53flash-nvfp4-mooncake-mtp3",
+  "engine": "official",
+  "sessions": 32,
+  "prompt_tpm_per_gpu": 5782000,
+  "decode_p50_tok_s": 151.8,
+  "ttft_p50_s": 0.28,
+  "ttft_p90_s": 0.8,
+  "hit_rate": 0.964,
+  "output_tpm_per_gpu": 38931
+ },
+ {
+  "config": "glm53flash-nvfp4-mooncake-mtp3",
+  "engine": "official",
+  "sessions": 40,
+  "prompt_tpm_per_gpu": 6986000,
+  "decode_p50_tok_s": 124.1,
+  "ttft_p50_s": 0.3,
+  "ttft_p90_s": 0.88,
+  "hit_rate": 0.964,
+  "output_tpm_per_gpu": 47485
+ },
+ {
+  "config": "glm53flash-nvfp4-mooncake-mtp3",
+  "engine": "official",
+  "sessions": 48,
+  "prompt_tpm_per_gpu": 8121000,
+  "decode_p50_tok_s": 103.9,
+  "ttft_p50_s": 0.38,
+  "ttft_p90_s": 1.28,
+  "hit_rate": 0.964,
+  "output_tpm_per_gpu": 52718
+ },
+ {
+  "config": "glm53flash-nvfp4-mooncake-mtp3",
+  "engine": "official",
+  "sessions": 56,
+  "prompt_tpm_per_gpu": 8630000,
+  "decode_p50_tok_s": 83.9,
+  "ttft_p50_s": 0.7,
+  "ttft_p90_s": 2.24,
+  "hit_rate": 0.959,
+  "output_tpm_per_gpu": 61134
+ },
+ {
+  "config": "glm53flash-nvfp4-mooncake-mtp3",
+  "engine": "official",
+  "sessions": 64,
+  "prompt_tpm_per_gpu": 8871000,
+  "decode_p50_tok_s": 72.3,
+  "ttft_p50_s": 1.66,
+  "ttft_p90_s": 5.99,
+  "hit_rate": 0.951,
+  "output_tpm_per_gpu": 64653
+ },
+ {
+  "config": "glm53flash-nvfp4-mooncake-mtp3",
+  "engine": "official",
+  "sessions": 72,
+  "prompt_tpm_per_gpu": 8414000,
+  "decode_p50_tok_s": 61.4,
+  "ttft_p50_s": 6.52,
+  "ttft_p90_s": 14.25,
+  "hit_rate": 0.943,
+  "output_tpm_per_gpu": 62333
+ },
+ {
+  "config": "glm53flash-nvfp4-mooncake-mtp3",
+  "engine": "official",
+  "sessions": 80,
+  "prompt_tpm_per_gpu": 8033000,
+  "decode_p50_tok_s": 57.9,
+  "ttft_p50_s": 12.4,
+  "ttft_p90_s": 21.88,
+  "hit_rate": 0.939,
+  "output_tpm_per_gpu": 61111
+ },
+ {
+  "config": "glm53flash-nvfp4-mooncake-mtp3",
+  "engine": "sglang",
+  "sessions": 32,
+  "prompt_tpm_per_gpu": 5635000,
+  "decode_p50_tok_s": 145.9,
+  "ttft_p50_s": 0.14,
+  "ttft_p90_s": 0.43,
+  "hit_rate": 0.975,
+  "output_tpm_per_gpu": 38523
+ },
+ {
+  "config": "glm53flash-nvfp4-mooncake-mtp3",
+  "engine": "sglang",
+  "sessions": 40,
+  "prompt_tpm_per_gpu": 6641000,
+  "decode_p50_tok_s": 115.3,
+  "ttft_p50_s": 0.15,
+  "ttft_p90_s": 0.52,
+  "hit_rate": 0.97,
+  "output_tpm_per_gpu": 46378
+ },
+ {
+  "config": "glm53flash-nvfp4-mooncake-mtp3",
+  "engine": "sglang",
+  "sessions": 48,
+  "prompt_tpm_per_gpu": 7874000,
+  "decode_p50_tok_s": 102.8,
+  "ttft_p50_s": 0.17,
+  "ttft_p90_s": 0.74,
+  "hit_rate": 0.97,
+  "output_tpm_per_gpu": 51422
+ },
+ {
+  "config": "glm53flash-nvfp4-mooncake-mtp3",
+  "engine": "sglang",
+  "sessions": 56,
+  "prompt_tpm_per_gpu": 8416000,
+  "decode_p50_tok_s": 88.3,
+  "ttft_p50_s": 0.22,
+  "ttft_p90_s": 3.07,
+  "hit_rate": 0.969,
+  "output_tpm_per_gpu": 59921
+ },
+ {
+  "config": "glm53flash-nvfp4-mooncake-mtp3",
+  "engine": "sglang",
+  "sessions": 64,
+  "prompt_tpm_per_gpu": 8913000,
+  "decode_p50_tok_s": 77.3,
+  "ttft_p50_s": 1.43,
+  "ttft_p90_s": 8.47,
+  "hit_rate": 0.964,
+  "output_tpm_per_gpu": 64611
+ },
+ {
+  "config": "glm53flash-nvfp4-mooncake-mtp3",
+  "engine": "sglang",
+  "sessions": 72,
+  "prompt_tpm_per_gpu": 8772000,
+  "decode_p50_tok_s": 72.1,
+  "ttft_p50_s": 6.54,
+  "ttft_p90_s": 15.62,
+  "hit_rate": 0.957,
+  "output_tpm_per_gpu": 63879
+ },
+ {
+  "config": "glm53flash-nvfp4-mooncake-mtp3",
+  "engine": "sglang",
+  "sessions": 80,
+  "prompt_tpm_per_gpu": 8556000,
+  "decode_p50_tok_s": 68.7,
+  "ttft_p50_s": 10.89,
+  "ttft_p90_s": 22.97,
+  "hit_rate": 0.952,
+  "output_tpm_per_gpu": 63444
+ }
+]

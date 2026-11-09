@@ -1,0 +1,218 @@
+[
+ {
+  "config": "glm53flash-nvfp4-gpu",
+  "engine": "official",
+  "sessions": 24,
+  "output_tpm_per_gpu": 26042,
+  "prompt_tpm_per_gpu": 3791000,
+  "uncached_p50": 4121,
+  "ttft_p90_s": 0.486
+ },
+ {
+  "config": "glm53flash-nvfp4-gpu",
+  "engine": "official",
+  "sessions": 32,
+  "output_tpm_per_gpu": 28236,
+  "prompt_tpm_per_gpu": 4068000,
+  "uncached_p50": 4130,
+  "ttft_p90_s": 0.824
+ },
+ {
+  "config": "glm53flash-nvfp4-gpu",
+  "engine": "official",
+  "sessions": 40,
+  "output_tpm_per_gpu": 27586,
+  "prompt_tpm_per_gpu": 3625000,
+  "uncached_p50": 4347,
+  "ttft_p90_s": 2.234
+ },
+ {
+  "config": "glm53flash-nvfp4-gpu",
+  "engine": "official",
+  "sessions": 48,
+  "output_tpm_per_gpu": 10277,
+  "prompt_tpm_per_gpu": 1484000,
+  "uncached_p50": 24671,
+  "ttft_p90_s": 20.405
+ },
+ {
+  "config": "glm53flash-nvfp4-gpu",
+  "engine": "flashstate",
+  "sessions": 24,
+  "output_tpm_per_gpu": 25995,
+  "prompt_tpm_per_gpu": 3818000,
+  "uncached_p50": 769,
+  "ttft_p90_s": 0.733
+ },
+ {
+  "config": "glm53flash-nvfp4-gpu",
+  "engine": "flashstate",
+  "sessions": 32,
+  "output_tpm_per_gpu": 29009,
+  "prompt_tpm_per_gpu": 4251000,
+  "uncached_p50": 898,
+  "ttft_p90_s": 1.21
+ },
+ {
+  "config": "glm53flash-nvfp4-gpu",
+  "engine": "flashstate",
+  "sessions": 40,
+  "output_tpm_per_gpu": 34808,
+  "prompt_tpm_per_gpu": 4729000,
+  "uncached_p50": 1025,
+  "ttft_p90_s": 1.216
+ },
+ {
+  "config": "glm53flash-nvfp4-gpu",
+  "engine": "flashstate",
+  "sessions": 48,
+  "output_tpm_per_gpu": 31045,
+  "prompt_tpm_per_gpu": 4658000,
+  "uncached_p50": 1025,
+  "ttft_p90_s": 2.357
+ },
+ {
+  "config": "nemotron3super-fp8-gpu",
+  "engine": "official",
+  "sessions": 24,
+  "output_tpm_per_gpu": 24717,
+  "prompt_tpm_per_gpu": 4476000,
+  "uncached_p50": 6437,
+  "ttft_p90_s": 0.647
+ },
+ {
+  "config": "nemotron3super-fp8-gpu",
+  "engine": "official",
+  "sessions": 32,
+  "output_tpm_per_gpu": 26440,
+  "prompt_tpm_per_gpu": 4311000,
+  "uncached_p50": 6693,
+  "ttft_p90_s": 3.493
+ },
+ {
+  "config": "nemotron3super-fp8-gpu",
+  "engine": "official",
+  "sessions": 40,
+  "output_tpm_per_gpu": 20375,
+  "prompt_tpm_per_gpu": 2602000,
+  "uncached_p50": 7358,
+  "ttft_p90_s": 11.534
+ },
+ {
+  "config": "nemotron3super-fp8-gpu",
+  "engine": "official",
+  "sessions": 48,
+  "output_tpm_per_gpu": 12799,
+  "prompt_tpm_per_gpu": 1862000,
+  "uncached_p50": 57313,
+  "ttft_p90_s": 23.404
+ },
+ {
+  "config": "nemotron3super-fp8-gpu",
+  "engine": "flashstate",
+  "sessions": 24,
+  "output_tpm_per_gpu": 24836,
+  "prompt_tpm_per_gpu": 4495000,
+  "uncached_p50": 834,
+  "ttft_p90_s": 0.624
+ },
+ {
+  "config": "nemotron3super-fp8-gpu",
+  "engine": "flashstate",
+  "sessions": 32,
+  "output_tpm_per_gpu": 28786,
+  "prompt_tpm_per_gpu": 5043000,
+  "uncached_p50": 962,
+  "ttft_p90_s": 0.973
+ },
+ {
+  "config": "nemotron3super-fp8-gpu",
+  "engine": "flashstate",
+  "sessions": 40,
+  "output_tpm_per_gpu": 33769,
+  "prompt_tpm_per_gpu": 5049000,
+  "uncached_p50": 1090,
+  "ttft_p90_s": 1.813
+ },
+ {
+  "config": "nemotron3super-fp8-gpu",
+  "engine": "flashstate",
+  "sessions": 48,
+  "output_tpm_per_gpu": 29685,
+  "prompt_tpm_per_gpu": 4229000,
+  "uncached_p50": 1582,
+  "ttft_p90_s": 5.361
+ },
+ {
+  "config": "qwen38flashnext-fp8-512k-gpu",
+  "engine": "official",
+  "sessions": 24,
+  "output_tpm_per_gpu": 21748,
+  "prompt_tpm_per_gpu": 2920000,
+  "uncached_p50": 3227,
+  "ttft_p90_s": 0.608
+ },
+ {
+  "config": "qwen38flashnext-fp8-512k-gpu",
+  "engine": "official",
+  "sessions": 32,
+  "output_tpm_per_gpu": 29823,
+  "prompt_tpm_per_gpu": 3356000,
+  "uncached_p50": 3373,
+  "ttft_p90_s": 0.854
+ },
+ {
+  "config": "qwen38flashnext-fp8-512k-gpu",
+  "engine": "official",
+  "sessions": 40,
+  "output_tpm_per_gpu": 32854,
+  "prompt_tpm_per_gpu": 3353000,
+  "uncached_p50": 3427,
+  "ttft_p90_s": 1.355
+ },
+ {
+  "config": "qwen38flashnext-fp8-512k-gpu",
+  "engine": "official",
+  "sessions": 48,
+  "output_tpm_per_gpu": 24635,
+  "prompt_tpm_per_gpu": 2390000,
+  "uncached_p50": 4279,
+  "ttft_p90_s": 7.483
+ },
+ {
+  "config": "qwen38flashnext-fp8-512k-gpu",
+  "engine": "flashstate",
+  "sessions": 24,
+  "output_tpm_per_gpu": 21887,
+  "prompt_tpm_per_gpu": 2967000,
+  "uncached_p50": 897,
+  "ttft_p90_s": 0.494
+ },
+ {
+  "config": "qwen38flashnext-fp8-512k-gpu",
+  "engine": "flashstate",
+  "sessions": 32,
+  "output_tpm_per_gpu": 30346,
+  "prompt_tpm_per_gpu": 3390000,
+  "uncached_p50": 1089,
+  "ttft_p90_s": 0.799
+ },
+ {
+  "config": "qwen38flashnext-fp8-512k-gpu",
+  "engine": "flashstate",
+  "sessions": 40,
+  "output_tpm_per_gpu": 36668,
+  "prompt_tpm_per_gpu": 3647000,
+  "uncached_p50": 1217,
+  "ttft_p90_s": 1.036
+ },
+ {
+  "config": "qwen38flashnext-fp8-512k-gpu",
+  "engine": "flashstate",
+  "sessions": 48,
+  "output_tpm_per_gpu": 37950,
+  "prompt_tpm_per_gpu": 3683000,
+  "uncached_p50": 1443,
+  "ttft_p90_s": 1.573
+ }
+]
