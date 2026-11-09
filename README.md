@@ -18,7 +18,7 @@ Unlocking Flexible Hybrid State Management for Agentic LLM Inference
 ## About
 
 <p align="center">
-  <a href="docs/demo/flashstate-48-agents.mp4"><img src="docs/demo/flashstate-48-agents.gif" width="90%" alt="Replay of 48 Claude Code agent sessions served by FlashStates, vLLM and SGLang on the same GPUs. Each circle is one agent; green slices are prompt tokens read from cache, red slices are recomputed. After 30 minutes FlashStates has finished 20 agents at 61.7K output tokens per minute with an 87% cache hit rate, vLLM 7 agents at 22.0K and 30%, SGLang 8 agents at 15.4K and 6%."></a>
+  <a href="docs/demo/flashstates-48-agents.mp4"><img src="docs/demo/flashstates-48-agents.gif" width="90%" alt="Replay of 48 Claude Code agent sessions served by FlashStates, vLLM and SGLang on the same GPUs. Each circle is one agent; green slices are prompt tokens read from cache, red slices are recomputed. After 30 minutes FlashStates has finished 20 agents at 61.7K output tokens per minute with an 87% cache hit rate, vLLM 7 agents at 22.0K and 30%, SGLang 8 agents at 15.4K and 6%."></a>
   <br>
   <em>48 coding agents on the same GPUs, replayed at 100× speed (GLM-5.3-Flash NVFP4, two B200 GPUs per engine). Each
   circle is one agent: green is prompt read from cache, red is recomputed. Click for the video with sound.</em>
