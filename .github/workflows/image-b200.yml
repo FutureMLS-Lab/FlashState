@@ -1,0 +1,98 @@
+# Build the FlashStates B200 image (manual dispatch).
+name: B200 image
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Image tag (for example v0.1.0-rc1)"
+        required: true
+      sources:
+        description: "Release tag holding vllm-src.tar.gz and mooncake-src.tar.gz (staging only; empty: the submodules)"
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: ${{ inputs.sources == '' && 'recursive' || 'false' }}
+
+      - name: Make room for the image
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache /usr/local/share/boost \
+            /usr/local/.ghcup /usr/share/swift /usr/local/share/powershell /usr/local/lib/node_modules
+          sudo docker image prune -af > /dev/null
+          if [ -d /mnt ]; then
+            sudo systemctl stop docker
+            echo '{"data-root": "/mnt/docker"}' | sudo tee /etc/docker/daemon.json
+            sudo mkdir -p /mnt/docker && sudo systemctl start docker
+          fi
+          df -h / /mnt
+
+      - name: Staging sources
+        if: inputs.sources != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release download "${{ inputs.sources }}" -p 'vllm-src.tar.gz' -p 'mooncake-src.tar.gz' -p 'SOURCES.txt' -D /tmp/src
+          rm -rf third_party/vllm third_party/mooncake
+          mkdir -p third_party/vllm third_party/mooncake
+          tar -xzf /tmp/src/vllm-src.tar.gz -C third_party/vllm
+          tar -xzf /tmp/src/mooncake-src.tar.gz -C third_party/mooncake
+          cat /tmp/src/SOURCES.txt
+
+      - name: Provenance
+        run: |
+          if [ -f /tmp/src/SOURCES.txt ]; then
+            vllm_commit=$(awk '$1 == "vllm" {print $2}' /tmp/src/SOURCES.txt)
+            mooncake_commit=$(awk '$1 == "mooncake" {print $2}' /tmp/src/SOURCES.txt)
+          else
+            vllm_commit=$(git -C third_party/vllm rev-parse HEAD)
+            mooncake_commit=$(git -C third_party/mooncake rev-parse HEAD)
+          fi
+          docker/write_source.sh "$vllm_commit" "$mooncake_commit" "$GITHUB_SHA"
+
+      - name: Build
+        run: |
+          image="ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/flashstates-b200:${{ inputs.tag }}"
+          echo "IMAGE=$image" >> "$GITHUB_ENV"
+          DOCKER_BUILDKIT=1 docker build --progress=plain -f docker/Dockerfile.b200 -t "$image" .
+          df -h /mnt
+
+      - name: Push
+        run: |
+          echo "${{ github.token }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+          docker push "$IMAGE" | tail -n 3
+          docker inspect --format '{{index .RepoDigests 0}}' "$IMAGE" | tee digest.txt
+
+      - name: Compiled files for an overlay run
+        run: |
+          mkdir -p overlay/vllm
+          for stage in kda-build mooncake-build; do
+            DOCKER_BUILDKIT=1 docker build -q -f docker/Dockerfile.b200 --target "$stage" -t "fs-$stage" . > /dev/null
+            id=$(docker create "fs-$stage")
+            docker cp "$id:/out/." overlay/
+            docker rm "$id" > /dev/null
+          done
+          while read -r status path; do
+            [ "$status" = D ] && continue
+            mkdir -p "overlay/vllm/$(dirname "${path#vllm/}")"
+            cp "third_party/vllm/$path" "overlay/vllm/${path#vllm/}"
+          done < docker/vllm_overlay.txt
+          cp docker/vllm_overlay.txt docker/SOURCE.json digest.txt overlay/
+          tar -czf "flashstates-b200-${{ inputs.tag }}-overlay.tar.gz" -C overlay .
+          sha256sum "flashstates-b200-${{ inputs.tag }}-overlay.tar.gz"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: flashstates-b200-${{ inputs.tag }}-overlay
+          path: flashstates-b200-${{ inputs.tag }}-overlay.tar.gz
+          retention-days: 30

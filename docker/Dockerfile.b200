@@ -1,0 +1,111 @@
+# syntax=docker/dockerfile:1.7
+# FlashStates for B200 (SM100): the official vLLM v0.33.0 image plus
+#   - FlashStates' vLLM changes (third_party/vllm: every change is a default-off option; with the options off the
+#     engine behaves as upstream v0.33.0), and its one compiled addition, the SM100 KDA export kernel
+#     (vllm._flashkda_export_C);
+#   - FlashStates' Mooncake: the store client module (mooncake/store) and mooncake_master built from
+#     third_party/mooncake on the Mooncake 0.3.13.post1 wheel (the unit_gds eviction policy and the pinned GPU copy are
+#     both opt-in, so stock behavior is the default);
+#   - the AgentX replay client (benchmarks/agentx_harness, in its own virtual environment at /opt/aiperf) and the
+#     benchmark scripts (/opt/flashstate).
+# The official vLLM baseline (with and without Mooncake) runs the base image itself, unchanged.
+#
+#   docker build -f docker/Dockerfile.b200 -t flashstates-b200 .     (from the repository root, submodules checked out)
+ARG BASE=vllm/vllm-openai:v0.33.0@sha256:d825baf9ce4b1b6bfc5ecc7b79880c7e6748c65a72d697ce3d47607aafa84c6e
+ARG MOONCAKE_WHEEL=mooncake-transfer-engine-cuda13==0.3.13.post1
+
+FROM ${BASE} AS mooncake-build
+USER root
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && apt-get install -y --no-install-recommends build-essential ninja-build git pkg-config patchelf \
+      libibverbs-dev libgoogle-glog-dev libgflags-dev libjsoncpp-dev libunwind-dev libnuma-dev libboost-all-dev \
+      libssl-dev libyaml-cpp-dev libcurl4-openssl-dev liburing-dev libjemalloc-dev libmsgpack-dev libmsgpack-cxx-dev \
+      libzmq3-dev libzstd-dev libasio-dev libxxhash-dev \
+    && rm -rf /var/lib/apt/lists/* \
+    && python3 -m pip install --no-cache-dir --break-system-packages cmake==3.31.6
+COPY third_party/mooncake /src/mooncake
+COPY docker/bundle_libs.sh /usr/local/bin/bundle_libs.sh
+RUN cmake -S /src/mooncake -B /build -G Ninja -DCMAKE_BUILD_TYPE=Release -DENABLE_DEBUG_SYMBOLS=OFF -DUSE_CUDA=ON \
+      -DUSE_TCP=ON -DUSE_ETCD=OFF -DSTORE_USE_ETCD=OFF -DUSE_HTTP=ON -DWITH_TE=ON -DWITH_STORE=ON -DWITH_P2P_STORE=OFF \
+      -DWITH_STORE_RUST=OFF -DWITH_RUST_EXAMPLE=OFF -DWITH_EP=OFF -DBUILD_UNIT_TESTS=OFF -DBUILD_EXAMPLES=OFF \
+      -DBUILD_BENCHMARK=OFF -DCMAKE_CUDA_COMPILER=/usr/local/cuda/bin/nvcc -DPython_EXECUTABLE=/usr/bin/python3 \
+    && cmake --build /build -j"$(nproc)" --target store mooncake_master \
+    && mkdir -p /out/mooncake/bin \
+    && cp "$(find /build/mooncake-integration -maxdepth 1 -name 'store*.so' | head -n 1)" /out/mooncake/store.so \
+    && cp "$(find /build -name mooncake_master -type f -executable | head -n 1)" /out/mooncake/bin/mooncake_master \
+    && bundle_libs.sh /out/mooncake/store.so /out/mooncake/mcpinned_libs '$ORIGIN/mcpinned_libs' /build \
+    && bundle_libs.sh /out/mooncake/bin/mooncake_master /out/mooncake/lib '$ORIGIN/../lib' /build \
+    && grep -qaF 'Store GPU copy' /out/mooncake/store.so
+
+FROM ${BASE} AS kda-build
+USER root
+ARG FLASHKDA_URL=https://github.com/vllm-project/FlashKDA/archive/17a037d98da546deb4591e967cf961a43c034d8b.tar.gz
+ARG FLASHKDA_SHA256=0dffba6f8bfc0724d46276d606c1322813d4cd63584de7f14ddb63317973fd3c
+ARG CUTLASS_URL=https://github.com/NVIDIA/cutlass/archive/5c149f52a436782210263fb2f19b354443a61c6a.tar.gz
+ARG CUTLASS_SHA256=fbf35b9d16a3c2c7384a4a044a5407d1dea334d74b3152357c1fa246bc07c6dc
+RUN mkdir -p /src/flashkda /src/cutlass \
+    && curl -fsSL "$FLASHKDA_URL" -o /tmp/flashkda.tar.gz && echo "$FLASHKDA_SHA256  /tmp/flashkda.tar.gz" | sha256sum -c - \
+    && curl -fsSL "$CUTLASS_URL" -o /tmp/cutlass.tar.gz && echo "$CUTLASS_SHA256  /tmp/cutlass.tar.gz" | sha256sum -c - \
+    && tar -xzf /tmp/flashkda.tar.gz -C /src/flashkda --strip-components=1 \
+    && tar -xzf /tmp/cutlass.tar.gz -C /src/cutlass --strip-components=1 \
+    && rm /tmp/*.tar.gz \
+    && python3 -m pip install --no-cache-dir --break-system-packages ninja
+COPY third_party/vllm/csrc /src/vllm/csrc
+COPY docker/build_flashkda_export.py /src/build_flashkda_export.py
+RUN MAX_JOBS="$(nproc)" python3 /src/build_flashkda_export.py /src/vllm /src/flashkda /src/cutlass /out/kda \
+    && ls -l /out/kda/_flashkda_export_C.so
+
+FROM ${BASE}
+USER root
+ARG MOONCAKE_WHEEL
+# FlashStates' vLLM: the files the fork changes under vllm/ (docker/vllm_overlay.txt, `git diff --no-renames
+# --name-status v0.33.0 HEAD -- vllm/` of third_party/vllm) over the installed v0.33.0 package, whose compiled kernels
+# stay, plus the SM100 KDA export kernel.
+COPY third_party/vllm/vllm /tmp/flashstate-vllm
+COPY docker/vllm_overlay.txt /tmp/vllm_overlay.txt
+COPY --from=kda-build /out/kda/_flashkda_export_C.so /tmp/_flashkda_export_C.so
+RUN site="$(python3 -c 'import os, vllm; print(os.path.dirname(vllm.__file__))')" \
+    && while read -r status path; do \
+         rel="${path#vllm/}"; \
+         case "$status" in \
+           D) rm -f "$site/$rel" ;; \
+           A|M) mkdir -p "$(dirname "$site/$rel")" && cp "/tmp/flashstate-vllm/$rel" "$site/$rel" ;; \
+           *) echo "unexpected status $status for $path" >&2; exit 1 ;; \
+         esac; \
+       done < /tmp/vllm_overlay.txt \
+    && cp /tmp/_flashkda_export_C.so "$site"/_flashkda_export_C.so \
+    && rm -rf /tmp/flashstate-vllm /tmp/_flashkda_export_C.so /tmp/vllm_overlay.txt \
+    && find "$site" -name '__pycache__' -prune -exec rm -rf {} +
+# FlashStates' Mooncake: the 0.3.13.post1 wheel the measurements used, with this build's store module and master.
+COPY --from=mooncake-build /out/mooncake /tmp/mooncake
+RUN uv pip uninstall --system mooncake-transfer-engine mooncake-transfer-engine-cuda13 2>/dev/null || true \
+    && uv pip install --system "$MOONCAKE_WHEEL" \
+    && pkg="$(python3 -c 'import os, mooncake; print(os.path.dirname(mooncake.__file__))')" \
+    && store="$(find "$pkg" -maxdepth 1 -name 'store*.so' | head -n 1)" \
+    && cp /tmp/mooncake/store.so "$store" && cp -a /tmp/mooncake/mcpinned_libs "$pkg"/ \
+    && mkdir -p /opt/mooncake && cp -a /tmp/mooncake/bin /tmp/mooncake/lib /opt/mooncake/ \
+    && ln -sf /opt/mooncake/bin/mooncake_master /usr/local/bin/mooncake_master \
+    && rm -rf /tmp/mooncake
+# The replay client in its own environment, and the benchmark scripts.
+COPY benchmarks /opt/flashstate/benchmarks
+COPY analysis /opt/flashstate/analysis
+RUN uv venv /opt/aiperf --python python3 \
+    && VIRTUAL_ENV=/opt/aiperf uv pip install --no-cache /opt/flashstate/benchmarks/agentx_harness \
+    && ln -sf /opt/aiperf/bin/aiperf /usr/local/bin/aiperf
+COPY docker/SOURCE.json /opt/flashstate/SOURCE.json
+# Static checks only (no GPU at build time): the engine imports, and no compiled addition misses a library (the KDA
+# kernel finds torch's libraries in the process that imports torch first, as vLLM's own kernels do).
+RUN python3 -c "import vllm; print('vllm', vllm.__version__)" \
+    && site="$(python3 -c 'import os, vllm; print(os.path.dirname(vllm.__file__))')" \
+    && pkg="$(python3 -c 'import importlib.util, os; print(os.path.dirname(importlib.util.find_spec("mooncake").origin))')" \
+    && torchlib="$(python3 -c 'import os, torch; print(os.path.join(os.path.dirname(torch.__file__), "lib"))')" \
+    && for so in "$site/_flashkda_export_C.so" "$pkg"/store*.so /opt/mooncake/bin/mooncake_master; do \
+         if LD_LIBRARY_PATH="$torchlib" ldd "$so" | grep -v 'libcuda.so' | grep 'not found'; then \
+           echo "missing libraries: $so" >&2; exit 1; \
+         fi; \
+       done \
+    && /opt/aiperf/bin/python -c "import aiperf; print('aiperf', aiperf.__file__)"
+ENV VLLM_HTTP_TIMEOUT_KEEP_ALIVE=900
+WORKDIR /opt/flashstate
+ENTRYPOINT []
+CMD ["bash"]
