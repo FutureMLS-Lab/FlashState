@@ -1,0 +1,8 @@
+[submodule "third_party/vllm"]
+	path = third_party/vllm
+	url = https://github.com/FutureMLS-Lab/vllm.git
+	branch = flashstate
+[submodule "third_party/mooncake"]
+	path = third_party/mooncake
+	url = https://github.com/FutureMLS-Lab/Mooncake.git
+	branch = flashstate
