@@ -7,6 +7,7 @@ Unlocking Flexible Hybrid State Management for Agentic LLM Inference
 
 <p align="center">
   <a href="https://www.alphaxiv.org/abs/2611.flashstate"><img src="https://img.shields.io/badge/Paper-alphaXiv-a83234.svg?logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MTguNDEgNTA0LjQ3Ij48cG9seWdvbiBmaWxsPSIjZmZmZmZmIiBwb2ludHM9IjU5MS4xNSAyNTguNTQgNzE4LjQxIDM4NS43MyA2NjMuNzIgNDQwLjI4IDUzNi41NyAzMTMuNjIgNTkxLjE1IDI1OC41NCI%2BPC9wb2x5Z29uPjxwYXRoIGZpbGw9IiNmZmZmZmYiIGQ9Ik0yNzMuODYuM2MzNC41Ni0yLjQxLDY3LjY2LDkuNzMsOTIuNTEsMzMuNTRsOTQuNjQsOTQuNjMtNTUuMTEsNTQuNTUtOTYuNzYtOTYuNTVjLTE2LjAyLTEyLjctMzcuNjctMTIuMS01My4xOSwxLjExTDU0LjYyLDI4OC44MiwwLDIzNC4yMywyMDQuNzYsMjkuNTdDMjIzLjEyLDEzLjMxLDI0OS4yNywyLjAyLDI3My44Ni4zWiI%2BPC9wYXRoPjxwYXRoIGZpbGw9IiNmZmZmZmYiIGQ9Ik02NjMuNzksMS4yOWw1NC42Miw1NC41OC00MTguMTEsNDE3LjljLTExNC40Myw5NS45NC0yNjMuNTctNTMuNDktMTY3LjA1LTE2Ny41MmwxNjAuNDYtMTYwLjMzLDU0LjYyLDU0LjU4LTE1Ny44OCwxNTcuNzdjLTMzLjE3LDQwLjMyLDE4LjkzLDkxLjQxLDU4LjY2LDU3LjQ4TDY2My43OSwxLjI5WiI%2BPC9wYXRoPjwvc3ZnPg%3D%3D" alt="Paper on alphaXiv"></a>
+  <a href="docs/FlashStates_Release.pdf"><img src="https://img.shields.io/badge/Paper-PDF-a83234.svg" alt="Paper PDF"></a>
   <a href="https://flashstates.ai"><img src="https://img.shields.io/badge/Website-flashstates.ai-2A78D6.svg" alt="Website"></a>
   <a href="https://github.com/orgs/FutureMLS-Lab/packages?repo_name=FlashStates"><img src="https://img.shields.io/badge/Docker-ghcr.io%2Ffuturemls--lab-2496ED.svg?logo=docker&logoColor=white" alt="Container images"></a>
   <a href="#citation"><img src="https://img.shields.io/badge/Cite-BibTeX-555555.svg" alt="BibTeX"></a>
@@ -149,7 +150,7 @@ A point takes about 50 minutes on GLM-5.3-Flash and about 80 minutes on the othe
 | [`docker/`](docker) | The B200 image ([how it is built](docs/how-the-image-is-built.md)) |
 | [`benchmarks/`](benchmarks/README.md) | Reproducibility scripts |
 | [`analysis/`](analysis) | Readings, tables and figures from the runs |
-| [`docs/`](docs) | [Install from source](docs/install.md), [what FlashStates changes](docs/what-flashstate-changes.md), [how the image is built](docs/how-the-image-is-built.md), the figures and their readings |
+| [`docs/`](docs) | [Release paper](docs/FlashStates_Release.pdf), [install from source](docs/install.md), [what FlashStates changes](docs/what-flashstate-changes.md), [how the image is built](docs/how-the-image-is-built.md), the figures and their readings |
 
 ## Status
 
